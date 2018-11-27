@@ -17,16 +17,11 @@ namespace FriendOrganizer.UI.Data
             _context = context;
         }
 
-        public async Task<List<Friend>> GetAllAsync()
+        public async Task<Friend> GetByIdAsync(int friendId)
         {
-            //yield return new Friend { FirstName = "Thomas", LastName = "Huber" };
-            //yield return new Friend { FirstName = "Andreas", LastName = "Boehler" };
-            //yield return new Friend { FirstName = "Julia", LastName = "Huber" };
-            //yield return new Friend { FirstName = "Chrissi", LastName = "Egin" };
-
             using (var ctx = _context())
             {
-                return await ctx.Friends.AsNoTracking().ToListAsync();
+                return await ctx.Friends.AsNoTracking().SingleAsync(f=>f.Id == friendId);
             }
 
         }

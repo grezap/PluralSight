@@ -12,6 +12,7 @@ namespace FriendOrganizer.UI.Data
     public class LookUpDataService : IFriendLookUpDataService
     {
         private Func<FriendOrganizerDbContext> _context;
+
         public LookUpDataService(Func<FriendOrganizerDbContext> context)
         {
             _context = context;
@@ -21,7 +22,11 @@ namespace FriendOrganizer.UI.Data
         {
             using (var ctx = _context())
             {
-                return await ctx.Friends.AsNoTracking().Select(f => new LookUpItem { Id = f.Id, DisplayMember = f.FirstName + " " + f.LastName }).ToListAsync();
+                return await ctx.Friends.AsNoTracking()
+                    .Select(f => new LookUpItem
+                    { Id = f.Id, DisplayMember = f.FirstName + " " + f.LastName }
+                    )
+                    .ToListAsync();
             }
         }
 
