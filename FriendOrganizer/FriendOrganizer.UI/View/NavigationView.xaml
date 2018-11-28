@@ -7,7 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <ListView Grid.Column="0" ItemsSource="{Binding Friends}" DisplayMemberPath="DisplayMember"/>
+        <ListView Grid.Column="0" ItemsSource="{Binding Friends}" 
+                  SelectedItem="{Binding SelectedFriend,Mode=TwoWay}"
+                  DisplayMemberPath="DisplayMember"/>
 
     </Grid>
 </UserControl>
