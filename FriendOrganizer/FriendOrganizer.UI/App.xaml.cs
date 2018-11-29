@@ -25,5 +25,11 @@ namespace FriendOrganizer.UI
             //var mainWindow = new MainWindow(new MainViewModel(new FriendDataService()));
             mainWindow.Show();
         }
+
+        private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            MessageBox.Show("UnExpected error occured. Please inform the admin." + Environment.NewLine + e.Exception.Message, "Unexpected error.");
+            e.Handled = true;
+        }
     }
 }
