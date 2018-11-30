@@ -28,5 +28,11 @@ namespace FriendOrganizer.Model
         {
             get; set;
         }
+
+        public int? FavoriteLanguageId { get; set; }
+
+        public ProgrammingLanguage FavoriteLanguage { get; set; }
+
+
     }
 }

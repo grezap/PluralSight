@@ -41,6 +41,12 @@ namespace FriendOrganizer.UI.Wrapper
             }
         }
 
+        public int? FavoriteLanguageId
+        {
+            get { return GetValue<int?>(); }
+            set { SetValue(value); }
+        }
+
         protected override IEnumerable<string> ValidateProperty(string propertyName)
         {
             switch (propertyName)
