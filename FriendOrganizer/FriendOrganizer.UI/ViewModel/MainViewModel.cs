@@ -16,14 +16,19 @@ namespace FriendOrganizer.UI.ViewModel
     {
         private IDetailViewModel _detailViewModel;
         private IEventAggregator _eventAggregator;
-        private Func<IDetailViewModel> _friendDetailViewModelCreator;
+        private Func<IFriendDetailViewModel> _friendDetailViewModelCreator;
+        private Func<IMeetingDetailViewModel> _meetingDetailViewModelCreator;
         private IMessageDialogService _messageDialogService;
 
-        public MainViewModel(INavigationViewModel navigationViewModel, Func<IDetailViewModel> friendDetailViewModelCreator, IEventAggregator eventAggregator, IMessageDialogService messageDialogService)
+        public MainViewModel(INavigationViewModel navigationViewModel, Func<IFriendDetailViewModel> friendDetailViewModelCreator, 
+            Func<IMeetingDetailViewModel> meetingDetailViewModelCreator,
+            IEventAggregator eventAggregator, IMessageDialogService messageDialogService)
         {
             _eventAggregator = eventAggregator;
 
             _friendDetailViewModelCreator = friendDetailViewModelCreator;
+            _meetingDetailViewModelCreator = meetingDetailViewModelCreator;
+
             _messageDialogService = messageDialogService;
             _eventAggregator.GetEvent<OpenDetailViewEvent>().Subscribe(OnOpenDetailView);
             _eventAggregator.GetEvent<AfterDetailDeletedEvent>().Subscribe(AfterDetailDeleted);
@@ -65,8 +70,13 @@ namespace FriendOrganizer.UI.ViewModel
                 case nameof(FriendDetailViewModel):
                     DetailViewModel = _friendDetailViewModelCreator();
                     break;
+                case nameof(MeetingDetailViewModel):
+                    DetailViewModel = _meetingDetailViewModelCreator();
+                    break;
+                default:
+                    throw new Exception($"ViewModel {args.ViewModelName} not mapped");
             }
-            DetailViewModel = _friendDetailViewModelCreator();
+            //DetailViewModel = _friendDetailViewModelCreator();
             await DetailViewModel.LoadAsync(args.Id);
         }
 

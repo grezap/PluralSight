@@ -18,13 +18,12 @@ using Prism.Events;
 
 namespace FriendOrganizer.UI.ViewModel
 {
-    public class FriendDetailViewModel : DetailViewModelBase, IDetailViewModel
+    public class FriendDetailViewModel : DetailViewModelBase, IFriendDetailViewModel
     {
         private IFriendRepository _friendRepository;
         private IMessageDialogService _messageDialogService;
         private IProgrammingLanguageLookUpDataService _programmingLanguageLookUpDataService;
         private FriendWrapper _friend;
-        private bool _hasChanges;
         private FriendPhoneNumberWrapper _selectedPhoneNumber;
 
         public FriendDetailViewModel(IFriendRepository friendRepository, IEventAggregator eventAggregator, 

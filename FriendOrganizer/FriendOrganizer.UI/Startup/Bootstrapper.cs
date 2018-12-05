@@ -24,10 +24,13 @@ namespace FriendOrganizer.UI.Startup
             builder.RegisterType<MessageDialogService>().As<IMessageDialogService>();
             builder.RegisterType<MainViewModel>().AsSelf();
             builder.RegisterType<NavigationViewModel>().As<INavigationViewModel>();
-            builder.RegisterType<FriendDetailViewModel>().As<IDetailViewModel>();
+            builder.RegisterType<FriendDetailViewModel>().As<IFriendDetailViewModel>();
+            builder.RegisterType<MeetingDetailViewModel>().As<IMeetingDetailViewModel>();
 
             builder.RegisterType<LookUpDataService>().AsImplementedInterfaces();
             builder.RegisterType<FriendRepository>().As<IFriendRepository>();
+            builder.RegisterType<MeetingRepository>().As<IMeetingRepository>();
+
             
             return builder.Build();
         }
