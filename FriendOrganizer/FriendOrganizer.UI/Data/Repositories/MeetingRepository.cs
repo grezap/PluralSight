@@ -25,5 +25,13 @@ namespace FriendOrganizer.UI.Data.Repositories
             return await _context.Set<Friend>().ToListAsync();
         }
 
+        public async Task ReloadFriendAsync(int friendId)
+        {
+            var dbEntityEntry = _context.ChangeTracker.Entries<Friend>().SingleOrDefault(db => db.Entity.Id == friendId);
+            if (dbEntityEntry != null)
+            {
+                await dbEntityEntry.ReloadAsync();
+            }
+        }
     }
 }

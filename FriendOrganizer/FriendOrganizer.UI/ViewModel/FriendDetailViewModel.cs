@@ -21,17 +21,16 @@ namespace FriendOrganizer.UI.ViewModel
     public class FriendDetailViewModel : DetailViewModelBase, IFriendDetailViewModel
     {
         private IFriendRepository _friendRepository;
-        private IMessageDialogService _messageDialogService;
         private IProgrammingLanguageLookUpDataService _programmingLanguageLookUpDataService;
         private FriendWrapper _friend;
         private FriendPhoneNumberWrapper _selectedPhoneNumber;
 
         public FriendDetailViewModel(IFriendRepository friendRepository, IEventAggregator eventAggregator, 
             IMessageDialogService messageDialogService,
-            IProgrammingLanguageLookUpDataService programmingLanguageLookUpDataService):base(eventAggregator)
+            IProgrammingLanguageLookUpDataService programmingLanguageLookUpDataService):base(eventAggregator, messageDialogService)
         {
             _friendRepository = friendRepository;
-            _messageDialogService = messageDialogService;
+            
             _programmingLanguageLookUpDataService = programmingLanguageLookUpDataService;
             AddPhoneNumberCommand = new DelegateCommand(OnAddPhoneNumberExecute);
             RemovePhoneNumberCommand = new DelegateCommand(OnRemovePhoneNumberExecute,OnRemovePhoneNumberCanExecute);
@@ -86,9 +85,11 @@ namespace FriendOrganizer.UI.ViewModel
             }
         }
         
-        public override async Task LoadAsync(int? friendId)
+        public override async Task LoadAsync(int friendId)
         {
-            var friend = friendId.HasValue ? await _friendRepository.GetByIdAsync(friendId) : CreateNewFriend();
+            var friend = friendId > 0 ? await _friendRepository.GetByIdAsync(friendId) : CreateNewFriend();
+
+            Id = friendId;
 
             InitializeFriend(friend);
 
@@ -141,6 +142,12 @@ namespace FriendOrganizer.UI.ViewModel
                     ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
 
                 }
+                if (e.PropertyName == nameof(Friend.FirstName) || 
+                    e.PropertyName == nameof(Friend.LastName
+                    ))
+                {
+                    SetTitle();
+                }
             };
             ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
             if (Friend.Id == 0)
@@ -148,6 +155,12 @@ namespace FriendOrganizer.UI.ViewModel
                 //Trick to trigger the validation
                 Friend.FirstName = "";
             }
+            SetTitle();
+        }
+
+        private void SetTitle()
+        {
+            Title = $"{Friend.FirstName} {Friend.LastName}";
         }
 
         private async Task LoadProgrammingLanguagesLookUpAsync()
@@ -181,6 +194,7 @@ namespace FriendOrganizer.UI.ViewModel
         {
             await _friendRepository.SaveAsync();
             HasChanges = _friendRepository.HasChanges();
+            Id = Friend.Id;
             RaiseDetailSavedEvent(Friend.Id, $"{Friend.FirstName} {Friend.LastName}");
         }
 
