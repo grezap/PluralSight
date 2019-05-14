@@ -14,7 +14,7 @@ namespace OdeToFood.Data
         {
             restaurants = new List<Restaurant>()
             {
-                new Restaurant { Id = 1, Name = "Scott' s Pizza", Location = "Maryland", Cuisine = CuisineType.Italian},
+                new Restaurant { Id = 1, Name = "Scott's Pizza", Location = "Maryland", Cuisine = CuisineType.Italian},
                 new Restaurant { Id = 2, Name = "Cinnamon Club", Location = "London", Cuisine = CuisineType.Italian},
                 new Restaurant { Id = 3, Name = "La Costa", Location = "California", Cuisine = CuisineType.Mexican}
             };
@@ -44,6 +44,17 @@ namespace OdeToFood.Data
             return restaurant;
         }
 
+        public Restaurant Delete(int id)
+        {
+            var restaurant = restaurants.FirstOrDefault(r => r.Id == id);
+
+            if (restaurant != null)
+            {
+                restaurants.Remove(restaurant);
+            }
+            return restaurant;
+        }
+
         public int Commit()
         {
             return 0;
@@ -55,6 +66,11 @@ namespace OdeToFood.Data
                    where string.IsNullOrEmpty(name) || r.Name.StartsWith(name)
                    orderby r.Name
                    select r;
+        }
+
+        public int GetCountOfRestaurants()
+        {
+            return restaurants.Count();
         }
     }
 }
